@@ -1,4 +1,4 @@
-import {useEffect, useState, useMemo} from 'react';
+import {useEffect, useState} from 'react';
 import {Forecast, Hour} from '../api/weather/forecast/ForecastInterface.ts';
 
 const useForecastData = (
@@ -24,10 +24,8 @@ const useForecastData = (
     }
   }, [weatherData, index]);
 
-  // Memoize the result based on a deep comparison of weatherData
-  const memoizedForecastData = useMemo(() => forecastData, [forecastData]);
-
-  return memoizedForecastData;
+  return forecastData;
 };
 
 export default useForecastData;
+
