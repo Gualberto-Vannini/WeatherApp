@@ -25,13 +25,12 @@ const useWeatherData = (location: string, debounceTime: number = 1000) => {
   useEffect(() => {
     const fetchWeatherData = async (city: string) => {
       try {
-        await forecastApi(city).then(response => {
-          setWeatherData(response.data.forecast);
-          setCity(response.data.location.name);
-          setCountry(response.data.location.country);
-          setTemperature(response.data.current.temp_c);
-          setIconUrl(response.data.current.condition.icon);
-        });
+        const response = await forecastApi(city);
+        setWeatherData(response.data.forecast);
+        setCity(response.data.location.name);
+        setCountry(response.data.location.country);
+        setTemperature(response.data.current.temp_c);
+        setIconUrl(response.data.current.condition.icon);
       } catch (error) {
         addNoLocation('No location found');
       }
