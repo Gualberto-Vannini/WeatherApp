@@ -9,6 +9,7 @@ import ForecastWeather from './src/ui-component/ForecastWeather.tsx';
 import useWeatherData from './src/hooks/useWeatherData.ts';
 import useForecastData from './src/hooks/useForecastData.ts';
 import EmptyWeatherState from './src/ui-component/EmptyWeatherState.tsx';
+import {Hour} from './src/api/weather/forecast/ForecastInterface.ts';
 // @ts-ignore
 import backgroundImage from './src/assets/backgroundImage.png';
 
@@ -62,7 +63,7 @@ function App(): React.JSX.Element {
                 iconUrl={iconUrl}
               />
               <View style={styles.forecastContainer}>
-                {forecastData.map((hourData: any, index: number) => (
+                {forecastData.map((hourData: Hour, index: number) => (
                   <ForecastWeather
                     key={index}
                     temperature={hourData.temp_c}
