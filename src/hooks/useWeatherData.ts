@@ -6,6 +6,11 @@ import {Forecast} from '../api/weather/forecast/ForecastInterface.ts';
 
 const useWeatherData = (location: string, debounceTime: number = 1000) => {
   const [loading, setLoading] = useState(false);
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [temperature, setTemperature] = useState(0);
+  const [iconUrl, setIconUrl] = useState('');
+  const [noLocation, addNoLocation] = useState('');
   const [weatherData, setWeatherData] = useState<Forecast>({
     forecastday: [
       {
@@ -13,11 +18,6 @@ const useWeatherData = (location: string, debounceTime: number = 1000) => {
       },
     ],
   });
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
-  const [temperature, setTemperature] = useState(0);
-  const [iconUrl, setIconUrl] = useState('');
-  const [noLocation, addNoLocation] = useState('');
 
   const debouncedLocation = useDebounce(location, debounceTime);
   const {calculateStartIndex} = useDateTime();
