@@ -13,11 +13,11 @@ const useWeatherData = (location: string, debounceTime: number = 1000) => {
       },
     ],
   });
-  const [city, setCity] = useState<string>('');
-  const [country, setCountry] = useState<string>('');
-  const [temperature, setTemperature] = useState<number>();
-  const [iconUrl, setIconUrl] = useState<string>('');
-  const [noLocation, addNoLocation] = useState<string>('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [temperature, setTemperature] = useState(0);
+  const [iconUrl, setIconUrl] = useState('');
+  const [noLocation, addNoLocation] = useState('');
 
   const debouncedLocation = useDebounce(location, debounceTime);
   const {calculateStartIndex} = useDateTime();

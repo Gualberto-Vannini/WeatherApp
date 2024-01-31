@@ -28,4 +28,3 @@ const useForecastData = (
 };
 
 export default useForecastData;
-
