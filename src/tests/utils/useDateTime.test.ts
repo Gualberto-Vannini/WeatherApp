@@ -1,4 +1,4 @@
-import useDateTime from '../../hooks/useDateTime';
+import useDateTime from '../../utils/useDateTime.ts';
 describe('useDateTime Hook', () => {
   const mockWeatherData = {
     forecastday: [

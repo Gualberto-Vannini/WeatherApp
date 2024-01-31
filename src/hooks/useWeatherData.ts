@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import forecastApi from '../api/weather/forecast/ForecastApi.ts';
 import useDebounce from './useDebounce.ts';
-import useDateTime from './useDateTime';
+import useDateTime from '../utils/useDateTime.ts';
 import {Forecast} from '../api/weather/forecast/ForecastInterface.ts';
 
 const useWeatherData = (location: string, debounceTime: number = 1000) => {
