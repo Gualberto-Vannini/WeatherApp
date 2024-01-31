@@ -2,6 +2,15 @@
 
 This is a React Native project for a simple weather application using the OpenWeatherMap API.
 
+
+
+
+<div align="center">
+  <img src="https://github.com/Gualberto-Vannini/WeatherApp/assets/22340454/a307d839-c422-47c5-b657-339a56594c70" alt="Weather App Screenshot" width="300"/>
+</div>
+
+
+
 ## Getting Started
 
 > **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till the "Creating a new application" step, before proceeding.
