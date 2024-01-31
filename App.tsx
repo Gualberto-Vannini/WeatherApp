@@ -1,118 +1,93 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import React, {useState} from 'react';
+import {SafeAreaView, ImageBackground, View, StyleSheet} from 'react-native';
+import {TextInput as RNTextInput} from './src/ui-component/TextInput';
+import {Container} from './src/ui-component/Container.tsx';
+import LoadingSpinner from './src/ui-component/LoadingSpinner.tsx';
+import NoLocationFound from './src/ui-component/NoLocationFound.tsx';
+import CurrentWeather from './src/ui-component/CurrentWeather.tsx';
+import ForecastWeather from './src/ui-component/ForecastWeather.tsx';
+import useWeatherData from './src/hooks/useWeatherData.ts';
+import useForecastData from './src/hooks/useForecastData.ts';
+import EmptyWeatherState from './src/ui-component/EmptyWeatherState.tsx';
+// @ts-ignore
+import backgroundImage from './src/assets/backgroundImage.png';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [location, addLocation] = useState<string>('');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const {
+    loading,
+    weatherData,
+    city,
+    country,
+    temperature,
+    iconUrl,
+    noLocation,
+    startIndex,
+  } = useWeatherData(location);
+  const forecastData = useForecastData(weatherData, startIndex);
+
+  if (loading) {
+    return <LoadingSpinner visible={loading} />;
+  }
+
+  const isEmptyWeatherData =
+    !weatherData ||
+    (weatherData.forecastday[0] &&
+      weatherData.forecastday[0].hour.length === 0);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={{flex: 1}}>
+      <ImageBackground
+        source={backgroundImage}
+        style={{width: '100%', height: '100%'}}>
+        <Container>
+          <RNTextInput
+            label={'Insert Your City (english only)'}
+            placeholder={'type a new city'}
+            value={location}
+            onChangeText={text => addLocation(text)}
+            error={noLocation}
+          />
+          {noLocation ? (
+            <NoLocationFound />
+          ) : isEmptyWeatherData ? (
+            <EmptyWeatherState />
+          ) : (
+            <>
+              <CurrentWeather
+                city={city}
+                country={country}
+                temperature={temperature}
+                iconUrl={iconUrl}
+              />
+              <View style={styles.forecastContainer}>
+                {forecastData.map((hourData: any, index: number) => (
+                  <ForecastWeather
+                    key={index}
+                    temperature={hourData.temp_c}
+                    iconUrl={hourData.condition.icon}
+                    size={'S'}
+                    forecast={true}
+                    date={hourData.time}
+                  />
+                ))}
+              </View>
+            </>
+          )}
+        </Container>
+      </ImageBackground>
     </SafeAreaView>
   );
 }
 
+export default App;
+
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  forecastContainer: {
+    flexDirection: 'row',
+    borderTopColor: 'white',
+    borderTopWidth: 1,
+    marginTop: '5%',
   },
 });
-
-export default App;

@@ -1,79 +1,54 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Weather App
 
-# Getting Started
+This is a React Native project for a simple weather application using the OpenWeatherMap API.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Getting Started
 
-## Step 1: Start the Metro Server
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till the "Creating a new application" step, before proceeding.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+### Step 1: Start the Metro Server
 
-To start Metro, run the following command from the _root_ of your React Native project:
+First, start **Metro**, the JavaScript bundler that ships with React Native.
+
+To start Metro, run the following command from the root of your React Native project:
 
 ```bash
-# using npm
-npm start
-
-# OR using Yarn
 yarn start
 ```
 
-## Step 2: Start your Application
+### Step 2: Start Your Application
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Let Metro Bundler run in its own terminal. Open a new terminal from the root of your React Native project. Run the following command to start your Android or iOS app:
 
 ### For Android
 
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
 yarn android
 ```
 
-### For iOS
+## Folder structure
+- `src`: This folder is the main container of all the code inside your application.
+   - `api`: Folder to store all axios rest apis.
+   - `ui-components`: Folder to store any common component that you use through your app.
+   - `hooks`: Folder to store custom hooks.
+   - `utils`: Folder to store utilities.
+   - `App.tsx`: Main component that starts your whole app.
+- `index.js`: Entry point of your application as per React-Native standards.
 
-```bash
-# using npm
-npm run ios
 
-# OR using Yarn
-yarn ios
-```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Test
+The test specific file can be executed with yarn test `yarn test src/tests/hooks/useWeatherData.test.ts` or all test can be executed with `yarn test`
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. `useDateTime.test.ts` In this test suite for the `useDateTime` hook:
+- `getCurrentHour`: It checks whether the getCurrentHour method of the useDateTime hook returns a number, indicating the current hour.
+- `getHourFromTime`: It verifies that the getHourFromTime method correctly extracts the hour from a given time string and returns it.
+- `calculateStartIndex`: It tests whether the calculateStartIndex method of the useDateTime hook returns the correct start index based on the provided mock weather data.
+2. `useDebounce.test.ts` In this test suite for the `useDebounce` hook:
+- should debounce the value: It verifies that the useDebounce hook correctly debounces the input value. It sets an initial value, updates it, waits for half of the debounce delay, and ensures that the debounced value hasn't changed yet. Then, it fast-forwards to the end of the debounce duration and checks if the debounced value has been updated to the new value.
+3. `useForecastData.test.ts` In this test suite for the `useForecastData` hook:
+- should return the correct forecast data based on index: It tests whether the hook returns the correct forecast data based on the provided index. It initializes the hook with undefined weather data and an index of 0, then updates it with mock weather data and an index of 0. The test asserts that the returned forecast data matches the expected slice of the first 5 elements from the mock data. Additional test cases for different scenarios, such as using nextDayForecast or when the index is at the end of the day, are suggested but not implemented in the provided code.
+3. `useWeatherData.test.ts` In this test suite for the `useWeatherData` hook:
+- should fetch weather data and update state variables: It tests whether the hook fetches weather data correctly and updates state variables accordingly. It uses renderHook to initialize the hook with a city ('MockCity') and asserts that the loading state is initially true, then becomes false after the asynchronous data fetching is complete. It further checks if the returned state variables match the expected values from the mocked weather response.
+- should handle no location found error: This test ensures that the hook properly handles the scenario where the location is not found. It mocks the Axios behavior to simulate an error response with the message 'No location found'. It then asserts that the hook's state variables, specifically noLocation and loading, are updated accordingly after the asynchronous operation.
+- Note: The beforeEach function is used to clear all mocks before each test, and the afterEach function restores all mocks after each test to prevent interference between test cases.
